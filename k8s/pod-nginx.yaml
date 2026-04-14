@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-nginx-test
+  labels:
+    type: pod-test
+spec:
+  containers:
+    - image: nginx
+      name: nginx-container
+      ports:
+        - containerPort: 80
+          name: "http-port"
+
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: nginx-pv
+
+  volumes:
+    - name: nginx-pv
+      persistentVolumeClaim:
+        claimName: nginx-pvc
