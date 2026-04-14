@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:15
+    container_name: lyceum-db
+    restart: always
+    environment:
+      POSTGRES_USER: doruk
+      POSTGRES_PASSWORD: rommel07.
+      POSTGRES_DB: lyceum
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    labels:
+      glance.name: Lyceum DB
+      glance.parent: lyceum
+  backend:
+    image: registry.turingon.tech/lyceum-api:1.0.2
+    container_name: lyceum-api
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "7676:7676"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: doruk
+      DB_PASSWORD: rommel07.
+      DB_NAME: lyceum
+
+    labels:
+      glance.parent: lyceum
+      glance.name: Lyceum Backend
+  frontend:
+    image: registry.turingon.tech/lyceum-frontend:1.0.4
+    container_name: lyceum-frontend
+    restart: always
+    ports:
+      - "5174:5174"  # React app will be exposed here
+    depends_on:
+      - backend 
+    labels:
+      glance.id: lyceum
+      glance.name: Lyceum
+      glance.description: Lyceum Virtual Library
+      glance.url: https://lyceum.turingon.tech
+volumes:
+  pgdata:
+
