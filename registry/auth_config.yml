@@ -1,0 +1,18 @@
+server:
+  addr: ":5001"
+
+users:
+  admin:
+    password: adminpassword
+    email: admin@example.com
+
+acl:
+  - match:
+      account: ""
+      type: "pull"
+    actions: ["pull"]
+
+  - match:
+      account: "admin"
+    actions: ["*"]
+
